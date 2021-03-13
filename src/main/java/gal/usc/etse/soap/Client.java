@@ -15,7 +15,6 @@ public class Client {
         Calculator client = service.getPort(Calculator.class);
         int result = client.sum(1, 2);
         System.out.println(result);
-        result = client.sum(new int[] {1, 2, 3, 4, 5});
         System.out.println(result);
     }
 }
