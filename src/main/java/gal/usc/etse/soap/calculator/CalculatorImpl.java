@@ -138,9 +138,9 @@ public class CalculatorImpl implements Calculator {
     public double mediana(int[] numeros) {
         return Arrays.stream(numeros).sorted()
                 //descartamos por el principio
-                .skip((numeros.length-1)/2)
+                .skip((numeros.length - 1) / 2)
                 //descartamos por el final
-                .limit(2- numeros.length%2)
+                .limit(2 - numeros.length % 2)
                 .average().orElse(-1.0);
     }
 
@@ -171,6 +171,6 @@ public class CalculatorImpl implements Calculator {
     @Override
     public double desviacionTipica(int[] numeros) {
         double media = Arrays.stream(numeros).average().orElse(-1.0);
-        return Math.sqrt(Arrays.stream(numeros).mapToDouble(num -> (double) num).map( num -> Math.pow(num-media, 2)).sum() / numeros.length);
+        return Math.sqrt(Arrays.stream(numeros).mapToDouble(num -> (double) num).map(num -> Math.pow(num - media, 2)).sum() / numeros.length);
     }
 }
