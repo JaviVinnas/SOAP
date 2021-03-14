@@ -2,6 +2,9 @@ package gal.usc.etse.soap.calculator;
 
 import javax.jws.WebService;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @WebService(
         endpointInterface = "gal.usc.etse.soap.calculator.Calculator",
@@ -133,13 +136,12 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public double mediana(int[] numeros) {
-        //ordenamos
-        Arrays.sort(numeros);
-        //si es de longitud par
-        double mediana;
-        if (numeros.length % 2 == 0) {
-            return ((double) numeros[numeros.length / 2] + (double) numeros[numeros.length / 2 - 1]) / 2;
-        } else return numeros[numeros.length / 2];
+        return Arrays.stream(numeros).sorted()
+                //descartamos por el principio
+                .skip((numeros.length-1)/2)
+                //descartamos por el final
+                .limit(2- numeros.length%2)
+                .average().orElse(-1.0);
     }
 
     /**
@@ -150,22 +152,14 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int moda(int[] numeros) {
-        int moda = 0;
-        int maxVecesQueSeRepite = 0;
-        for (int i : numeros) {
-            int vecesQueSeRepite = 0;
-            for (int j : numeros) {
-                if (i == j) {
-                    vecesQueSeRepite++;
-                }
-                if (vecesQueSeRepite > maxVecesQueSeRepite) {
-                    maxVecesQueSeRepite = vecesQueSeRepite;
-                    moda = i;
-                }
-
-            }
-        }
-        return moda;
+        return Arrays.stream(numeros)
+                .boxed()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(-1);
     }
 
     /**
@@ -176,7 +170,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public double desviacionTipica(int[] numeros) {
-        double media = media(numeros);
-        return raizCuadrada(Arrays.stream(numeros).map(num -> (int) potencia((int) (num - media), 2)).sum() / numeros.length);
+        double media = Arrays.stream(numeros).average().orElse(-1.0);
+        return Math.sqrt(Arrays.stream(numeros).mapToDouble(num -> (double) num).map( num -> Math.pow(num-media, 2)).sum() / numeros.length);
     }
 }

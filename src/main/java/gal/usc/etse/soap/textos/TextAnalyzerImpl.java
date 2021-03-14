@@ -102,8 +102,10 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public String reemplazarPalabra(String texto, String objetivo, String reemplazo) {
+        final String fixedObjetivo = objetivo.strip().trim();
+        final String fixedreemplazo = reemplazo.strip().trim();
         return Arrays.stream(texto.strip().trim().split(" "))
-                .map(palabra -> palabra.equals(objetivo) ? reemplazo : palabra)
+                .map(palabra -> palabra.strip().trim().equals(fixedObjetivo) ? fixedreemplazo : palabra)
                 .reduce("", String::concat);
     }
 }
