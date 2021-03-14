@@ -17,8 +17,8 @@ public class CalculatorImpl implements Calculator {
      * @return el resultado de la raíz cuadrada
      */
     @Override
-    public int raizCuadrada(int radicando) {
-        return 0;
+    public double raizCuadrada(int radicando) {
+        return Math.sqrt(radicando);
     }
 
     /**
@@ -28,8 +28,8 @@ public class CalculatorImpl implements Calculator {
      * @return el logaritmo correspondiente al argumento
      */
     @Override
-    public int logaritmoNeperiano(int argumento) {
-        return 0;
+    public double logaritmoNeperiano(int argumento) {
+        return Math.log(argumento);
     }
 
     /**
@@ -41,7 +41,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int sum(int sum1, int sum2) {
-        return 0;
+        return sum1 + sum2;
     }
 
     /**
@@ -53,7 +53,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int resta(int minuendo, int sustraendo) {
-        return 0;
+        return minuendo - sustraendo;
     }
 
     /**
@@ -65,7 +65,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int multiplicacion(int mult1, int mult2) {
-        return 0;
+        return mult1 * mult2;
     }
 
     /**
@@ -77,7 +77,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public double division(int dividendo, int divisor) {
-        return 0;
+        return (double) dividendo / divisor;
     }
 
     /**
@@ -88,8 +88,8 @@ public class CalculatorImpl implements Calculator {
      * @return la potencia
      */
     @Override
-    public int potencia(int base, int exponente) {
-        return 0;
+    public double potencia(int base, int exponente) {
+        return Math.pow(base, exponente);
     }
 
     /**
@@ -100,7 +100,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int maximo(int[] numeros) {
-        return 0;
+        return Arrays.stream(numeros).max().orElse(-1);
     }
 
     /**
@@ -111,7 +111,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int minimo(int[] numeros) {
-        return 0;
+        return Arrays.stream(numeros).min().orElse(-1);
     }
 
     /**
@@ -122,7 +122,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public double media(int[] numeros) {
-        return 0;
+        return Arrays.stream(numeros).average().orElse(-1.0);
     }
 
     /**
@@ -132,8 +132,14 @@ public class CalculatorImpl implements Calculator {
      * @return la mediana de la lista de números
      */
     @Override
-    public int mediana(int[] numeros) {
-        return 0;
+    public double mediana(int[] numeros) {
+        //ordenamos
+        Arrays.sort(numeros);
+        //si es de longitud par
+        double mediana;
+        if (numeros.length % 2 == 0) {
+            return ((double) numeros[numeros.length / 2] + (double) numeros[numeros.length / 2 - 1]) / 2;
+        } else return numeros[numeros.length / 2];
     }
 
     /**
@@ -144,7 +150,22 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public int moda(int[] numeros) {
-        return 0;
+        int moda = 0;
+        int maxVecesQueSeRepite = 0;
+        for (int i : numeros) {
+            int vecesQueSeRepite = 0;
+            for (int j : numeros) {
+                if (i == j) {
+                    vecesQueSeRepite++;
+                }
+                if (vecesQueSeRepite > maxVecesQueSeRepite) {
+                    maxVecesQueSeRepite = vecesQueSeRepite;
+                    moda = i;
+                }
+
+            }
+        }
+        return moda;
     }
 
     /**
@@ -155,6 +176,7 @@ public class CalculatorImpl implements Calculator {
      */
     @Override
     public double desviacionTipica(int[] numeros) {
-        return 0;
+        double media = media(numeros);
+        return raizCuadrada(Arrays.stream(numeros).map(num -> (int) potencia((int) (num - media), 2)).sum() / numeros.length);
     }
 }

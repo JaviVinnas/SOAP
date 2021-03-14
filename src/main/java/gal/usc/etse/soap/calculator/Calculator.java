@@ -16,7 +16,7 @@ public interface Calculator {
      */
     @WebMethod(operationName = "raiz_cuadrada")
     @WebResult(name = "resultado")
-    int raizCuadrada(@WebParam(name = "radicando") int radicando);
+    double raizCuadrada(@WebParam(name = "radicando") int radicando);
     //->Logaritmo Neperiano
     /**
      * Calcula el logaritmo neperiano de un número
@@ -25,7 +25,7 @@ public interface Calculator {
      */
     @WebMethod(operationName = "logaritmo_neperiano")
     @WebResult(name = "resultado")
-    int logaritmoNeperiano(@WebParam(name = "argumento") int argumento);
+    double logaritmoNeperiano(@WebParam(name = "argumento") int argumento);
     //--operaciones con dos números--
     //->Suma
     /**
@@ -76,7 +76,7 @@ public interface Calculator {
      */
     @WebMethod(operationName = "potencia")
     @WebResult(name = "resultado")
-    int potencia(@WebParam(name = "base") int base, @WebParam(name = "exponente") int exponente);
+    double potencia(@WebParam(name = "base") int base, @WebParam(name = "exponente") int exponente);
 
 
     //--operaciones con una lista de números--
@@ -115,7 +115,7 @@ public interface Calculator {
      */
     @WebMethod(operationName = "mediana_lista")
     @WebResult(name = "resultado")
-    int mediana(@WebParam(name = "lista_numeros") int[] numeros);
+    double mediana(@WebParam(name = "lista_numeros") int[] numeros);
     //->Moda
     /**
      * Devuelve la moda de un conjunto de números

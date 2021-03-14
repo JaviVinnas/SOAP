@@ -2,9 +2,14 @@ package gal.usc.etse.soap.textos;
 
 
 import javax.jws.WebService;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-@WebService(endpointInterface = "gal.usc.etse.soap.textos.TextAnalyzer", serviceName = "Calculator")
-public class TextAnalyzerImpl implements TextAnalyzer{
+@WebService(endpointInterface = "gal.usc.etse.soap.textos.TextAnalyzer", serviceName = "TextAnalyzer")
+public class TextAnalyzerImpl implements TextAnalyzer {
     /**
      * Cuenta el número de palabras del texto
      *
@@ -12,8 +17,9 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      * @return el número de palabras
      */
     @Override
-    public int contarPalabras(String texto) {
-        return 0;
+    public long contarPalabras(String texto) {
+        //quitamos el espacio del principio y el final
+        return Arrays.stream(texto.strip().trim().split(" ")).count();
     }
 
     /**
@@ -23,8 +29,8 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      * @return el número de caracteres del texto
      */
     @Override
-    public int contarCaracteres(String texto) {
-        return 0;
+    public long contarCaracteres(String texto) {
+        return Arrays.stream(texto.split("")).count();
     }
 
     /**
@@ -34,8 +40,8 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      * @return el número de frases del texto
      */
     @Override
-    public int contarFrases(String texto) {
-        return 0;
+    public long contarFrases(String texto) {
+        return Arrays.stream(texto.strip().trim().split("\\.")).count();
     }
 
     /**
@@ -46,7 +52,13 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      */
     @Override
     public String palabraMasUsada(String texto) {
-        return null;
+        return Arrays.stream(texto.strip().trim().split(" "))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     /**
@@ -57,7 +69,13 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      */
     @Override
     public String palabraMenosUsada(String texto) {
-        return null;
+        return Arrays.stream(texto.strip().trim().split(" "))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     /**
@@ -68,8 +86,10 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      * @return el número de veces que se repite una palabra
      */
     @Override
-    public int contarAparicionesPalabra(String texto, String palabra) {
-        return 0;
+    public long contarAparicionesPalabra(String texto, String palabra) {
+        return Arrays.stream(texto.strip().trim().split(" "))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .getOrDefault(palabra, -1L);
     }
 
     /**
@@ -82,6 +102,8 @@ public class TextAnalyzerImpl implements TextAnalyzer{
      */
     @Override
     public String reemplazarPalabra(String texto, String objetivo, String reemplazo) {
-        return null;
+        return Arrays.stream(texto.strip().trim().split(" "))
+                .map(palabra -> palabra.equals(objetivo) ? reemplazo : palabra)
+                .reduce("", String::concat);
     }
 }

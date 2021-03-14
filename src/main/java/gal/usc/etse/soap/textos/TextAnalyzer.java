@@ -17,7 +17,7 @@ public interface TextAnalyzer {
      */
     @WebMethod(operationName = "contar_palabras")
     @WebResult(name = "numero_palabras")
-    int contarPalabras(@WebParam(name = "texto") String texto);
+    long contarPalabras(@WebParam(name = "texto") String texto);
     //->Contar caracteres (todos)
     /**
      * Cuenta caracteres de un texto incluyendo espacios y signos de puntuación
@@ -26,7 +26,7 @@ public interface TextAnalyzer {
      */
     @WebMethod(operationName = "contar_caracteres")
     @WebResult(name = "numero_caracteres")
-    int contarCaracteres(@WebParam(name = "texto") String texto);
+    long contarCaracteres(@WebParam(name = "texto") String texto);
     //->Contar frases
     /**
      * Cuenta el número de frases de un texto
@@ -35,7 +35,7 @@ public interface TextAnalyzer {
      */
     @WebMethod(operationName = "contar_frases")
     @WebResult(name = "numero_frases")
-    int contarFrases(@WebParam(name = "texto") String texto);
+    long contarFrases(@WebParam(name = "texto") String texto);
     //->Contar palabra más usada
     /**
      * Devuelve la palabra que se repita más en un texto
@@ -64,7 +64,7 @@ public interface TextAnalyzer {
      */
     @WebMethod(operationName = "contar_apariciones_palabra")
     @WebResult(name = "numero_apariciones_palabra")
-    int contarAparicionesPalabra(@WebParam(name = "texto") String texto, @WebParam(name = "palabra") String palabra);
+    long contarAparicionesPalabra(@WebParam(name = "texto") String texto, @WebParam(name = "palabra") String palabra);
     //--el texto y dos parámetros--
     //->Reemplazar palabra
     /**
