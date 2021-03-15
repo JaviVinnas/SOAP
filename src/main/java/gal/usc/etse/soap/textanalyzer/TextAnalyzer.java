@@ -1,4 +1,4 @@
-package gal.usc.etse.soap.textos;
+package gal.usc.etse.soap.textanalyzer;
 
 
 import javax.jws.WebMethod;

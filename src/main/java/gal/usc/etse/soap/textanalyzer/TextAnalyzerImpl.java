@@ -1,4 +1,4 @@
-package gal.usc.etse.soap.textos;
+package gal.usc.etse.soap.textanalyzer;
 
 
 import javax.jws.WebService;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@WebService(endpointInterface = "gal.usc.etse.soap.textos.TextAnalyzer", serviceName = "TextAnalyzer")
+@WebService(endpointInterface = "gal.usc.etse.soap.textanalyzer.TextAnalyzer", serviceName = "TextAnalyzer")
 public class TextAnalyzerImpl implements TextAnalyzer {
     /**
      * Cuenta el número de palabras del texto
