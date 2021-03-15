@@ -141,7 +141,7 @@ public class CalculatorImpl implements Calculator {
                 .skip((numeros.length - 1) / 2)
                 //descartamos por el final
                 .limit(2 - numeros.length % 2)
-                .average().orElse(-1.0);
+                .average().orElse(Double.NaN);
     }
 
     /**

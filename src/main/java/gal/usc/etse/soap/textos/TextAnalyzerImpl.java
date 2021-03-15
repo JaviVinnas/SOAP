@@ -3,7 +3,6 @@ package gal.usc.etse.soap.textos;
 
 import javax.jws.WebService;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -102,10 +101,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public String reemplazarPalabra(String texto, String objetivo, String reemplazo) {
-        final String fixedObjetivo = objetivo.strip().trim();
-        final String fixedreemplazo = reemplazo.strip().trim();
         return Arrays.stream(texto.strip().trim().split(" "))
-                .map(palabra -> palabra.strip().trim().equals(fixedObjetivo) ? fixedreemplazo : palabra)
-                .reduce("", String::concat);
+                .map(palabra -> palabra.equals(objetivo) ? reemplazo : palabra)
+                .reduce("", (acumulador, palabra) -> acumulador + " " + palabra);
     }
 }
