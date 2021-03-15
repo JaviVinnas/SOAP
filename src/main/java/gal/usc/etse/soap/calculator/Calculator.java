@@ -54,9 +54,9 @@ public interface Calculator {
      * @param mult2 el primer argumento a multiplicar
      * @return el resultado de la multiplicación
      */
-    @WebMethod(operationName = "multiplicación")
+    @WebMethod(operationName = "multiplicacion")
     @WebResult(name = "resultado")
-    int multiplicacion(@WebParam(name = "multiplicando1") int mult1, @WebParam(name = "multiplicando1") int mult2);
+    int multiplicacion(@WebParam(name = "multiplicando1") int mult1, @WebParam(name = "multiplicando2") int mult2);
     //->División
     /**
      * Devuelve la división del dividendo por el divisor
@@ -64,7 +64,7 @@ public interface Calculator {
      * @param divisor tamaño de los grupos en los que se dividirá el dividendo
      * @return el resultado de la división
      */
-    @WebMethod(operationName = "división")
+    @WebMethod(operationName = "division")
     @WebResult(name = "cociente")
     double division(@WebParam(name = "dividendo") int dividendo, @WebParam(name = "divisor") int divisor);
     //->Potencia
@@ -86,7 +86,7 @@ public interface Calculator {
      * @param numeros lista de números
      * @return el valor más alto de la lista
      */
-    @WebMethod(operationName = "máximo_lista")
+    @WebMethod(operationName = "maximo_lista")
     @WebResult(name = "resultado")
     int maximo(@WebParam(name = "lista_numeros") int[] numeros);
     //->Mínimo
@@ -95,7 +95,7 @@ public interface Calculator {
      * @param numeros lista de números
      * @return el valor más bajo de la lista
      */
-    @WebMethod(operationName = "mínimo_lista")
+    @WebMethod(operationName = "minimo_lista")
     @WebResult(name = "resultado")
     int minimo(@WebParam(name = "lista_numeros") int[] numeros);
     //->Media

@@ -18,7 +18,7 @@ public class TextAnalyzerImpl implements TextAnalyzer {
     @Override
     public long contarPalabras(String texto) {
         //quitamos el espacio del principio y el final
-        return Arrays.stream(texto.strip().trim().split(" ")).count();
+        return Arrays.stream(texto.trim().split("\\s+")).count();
     }
 
     /**
@@ -29,7 +29,7 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public long contarCaracteres(String texto) {
-        return Arrays.stream(texto.split("")).count();
+        return Arrays.stream(texto.split("(?!^)")).count();
     }
 
     /**
@@ -40,7 +40,7 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public long contarFrases(String texto) {
-        return Arrays.stream(texto.strip().trim().split("\\.")).count();
+        return Arrays.stream(texto.trim().split("\n|\\.(?!\\d)|(?<!\\d)\\.")).count();
     }
 
     /**
@@ -51,7 +51,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public String palabraMasUsada(String texto) {
-        return Arrays.stream(texto.strip().trim().split(" "))
+        return Arrays.stream(texto.trim().split("\\s+"))
+                .map(palabra -> palabra.endsWith(".") ? palabra.substring(0, palabra.length() -1) : palabra)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -68,7 +69,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public String palabraMenosUsada(String texto) {
-        return Arrays.stream(texto.strip().trim().split(" "))
+        return Arrays.stream(texto.trim().split("\\s+"))
+                .map(palabra -> palabra.endsWith(".") ? palabra.substring(0, palabra.length() -1) : palabra)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -86,9 +88,10 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public long contarAparicionesPalabra(String texto, String palabra) {
-        return Arrays.stream(texto.strip().trim().split(" "))
+        return Arrays.stream(texto.trim().split("\\s+"))
+                .map(word -> word.endsWith(".") ? word.substring(0, word.length() -1) : word)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .getOrDefault(palabra, -1L);
+                .getOrDefault(palabra, -0L);
     }
 
     /**
@@ -101,7 +104,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
      */
     @Override
     public String reemplazarPalabra(String texto, String objetivo, String reemplazo) {
-        return Arrays.stream(texto.strip().trim().split(" "))
+        return Arrays.stream(texto.trim().split("\\s+"))
+                .map(word -> word.endsWith(".") ? word.substring(0, word.length() -1) : word)
                 .map(palabra -> palabra.equals(objetivo) ? reemplazo : palabra)
                 .reduce("", (acumulador, palabra) -> acumulador + " " + palabra);
     }

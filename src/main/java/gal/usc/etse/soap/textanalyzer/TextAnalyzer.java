@@ -42,8 +42,8 @@ public interface TextAnalyzer {
      * @param texto el texto donde buscar las palabras
      * @return la palabra en cuestión
      */
-    @WebMethod(operationName = "obtener_palabra_más_usada")
-    @WebResult(name = "palabra_más_usada")
+    @WebMethod(operationName = "obtener_palabra_mas_usada")
+    @WebResult(name = "palabra_mas_usada")
     String palabraMasUsada(@WebParam(name = "texto") String texto);
     //->Contar palabra menos usada
     /**
