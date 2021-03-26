@@ -17,6 +17,5 @@ public class Server {
         TextAnalyzer textAnalyzer = new TextAnalyzerImpl();
         String textAnalyzerAddress = "http://localhost:8080/textanalyzer";
         Endpoint.publish(textAnalyzerAddress,textAnalyzer);
-
     }
 }

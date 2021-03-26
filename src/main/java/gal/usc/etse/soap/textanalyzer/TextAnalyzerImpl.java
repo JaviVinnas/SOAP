@@ -2,7 +2,9 @@ package gal.usc.etse.soap.textanalyzer;
 
 
 import javax.jws.WebService;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,6 +45,21 @@ public class TextAnalyzerImpl implements TextAnalyzer {
         return Arrays.stream(texto.trim().split("\n|\\.(?!\\d)|(?<!\\d)\\.")).count();
     }
 
+    private List<String> eliminarSignosPuntuacion(String palabra) {
+        String[] resultado = {null, palabra, null};
+        //si empieza por un signo de puntuación
+        if (palabra.matches("[,.¿¡].*$")) {
+            resultado[0] = String.valueOf(palabra.charAt(0));
+            resultado[1] = palabra.substring(1);
+        }
+        //si termina por un signo de puntuación
+        if (palabra.matches(".*[,.?!]$")) {
+            resultado[1] = palabra.substring(0, palabra.length() - 1);
+            resultado[2] = String.valueOf(palabra.charAt(palabra.length() - 1));
+        }
+        return Arrays.asList(resultado);
+    }
+
     /**
      * Devuelve la palabra que se repita más en un texto
      *
@@ -52,7 +69,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
     @Override
     public String palabraMasUsada(String texto) {
         return Arrays.stream(texto.trim().split("\\s+"))
-                .map(palabra -> palabra.endsWith(".") ? palabra.substring(0, palabra.length() -1) : palabra)
+                .map(this::eliminarSignosPuntuacion)
+                .map(list -> list.get(1))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -70,7 +88,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
     @Override
     public String palabraMenosUsada(String texto) {
         return Arrays.stream(texto.trim().split("\\s+"))
-                .map(palabra -> palabra.endsWith(".") ? palabra.substring(0, palabra.length() -1) : palabra)
+                .map(this::eliminarSignosPuntuacion)
+                .map(list -> list.get(1))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
@@ -89,7 +108,8 @@ public class TextAnalyzerImpl implements TextAnalyzer {
     @Override
     public long contarAparicionesPalabra(String texto, String palabra) {
         return Arrays.stream(texto.trim().split("\\s+"))
-                .map(word -> word.endsWith(".") ? word.substring(0, word.length() -1) : word)
+                .map(this::eliminarSignosPuntuacion)
+                .map(list -> list.get(1))
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .getOrDefault(palabra, -0L);
     }
@@ -105,8 +125,14 @@ public class TextAnalyzerImpl implements TextAnalyzer {
     @Override
     public String reemplazarPalabra(String texto, String objetivo, String reemplazo) {
         return Arrays.stream(texto.trim().split("\\s+"))
-                .map(word -> word.endsWith(".") ? word.substring(0, word.length() -1) : word)
-                .map(palabra -> palabra.equals(objetivo) ? reemplazo : palabra)
-                .reduce("", (acumulador, palabra) -> acumulador + " " + palabra);
+                .map(this::eliminarSignosPuntuacion)
+                .map(list -> {
+                    String palabra = list.get(1);
+                    palabra = palabra.equals(objetivo) ? reemplazo : palabra;
+                    palabra = list.get(0) != null ? list.get(0) + palabra : palabra;
+                    palabra = list.get(2) != null ? palabra + list.get(2) : palabra;
+                    return palabra;
+                })
+                .collect(Collectors.joining(" "));
     }
 }

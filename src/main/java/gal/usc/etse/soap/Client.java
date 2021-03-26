@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Client {
 
@@ -70,17 +71,22 @@ public class Client {
                         scanner.nextLine();
                         break;
                     case "c":
-                        System.out.print("Introduce una lista de enteros separados por comas (por ejemplo '3,57,6'): ");
-                        texto = scanner.next(Pattern.compile("([0-9]*,)*[0-9]+"));
-                        arrayInts = Arrays.stream(texto.split(",")).mapToInt(Integer::parseInt).toArray();
-                        System.out.println("*) El máximo de [" + texto + "] es " + calculator.maximo(arrayInts));
-                        System.out.println("*) El mínimo de [" + texto + "] es " + calculator.minimo(arrayInts));
-                        System.out.println("*) La media de [" + texto + "] es " + calculator.media(arrayInts));
-                        System.out.println("*) La mediana de [" + texto + "] es " + calculator.mediana(arrayInts));
-                        System.out.println("*) La moda de [" + texto + "] es " + calculator.moda(arrayInts));
-                        System.out.println("*) La desviación típica de [" + texto + "] es " + calculator.desviacionTipica(arrayInts));
-                        System.out.println();
-                        scanner.nextLine();
+                        System.out.print("Introduce una lista de enteros separados por comas (por ejemplo '3,57,-6' sin las comillas simples): ");
+                        try{
+                            texto = scanner.next(Pattern.compile("(-?[0-9]*,)*-?[0-9]+"));
+                            arrayInts = Arrays.stream(texto.split(",")).mapToInt(Integer::parseInt).toArray();
+                            System.out.println("*) El máximo de [" + texto + "] es " + calculator.maximo(arrayInts));
+                            System.out.println("*) El mínimo de [" + texto + "] es " + calculator.minimo(arrayInts));
+                            System.out.println("*) La media de [" + texto + "] es " + calculator.media(arrayInts));
+                            System.out.println("*) La mediana de [" + texto + "] es " + calculator.mediana(arrayInts));
+                            System.out.println("*) La moda de [" + texto + "] es " + calculator.moda(arrayInts));
+                            System.out.println("*) La desviación típica de [" + texto + "] es " + calculator.desviacionTipica(arrayInts));
+                        }catch (PatternSyntaxException badArraySyntax){
+                            System.out.println("El array de ints introducido no es válido");
+                        }finally {
+                            System.out.println();
+                            scanner.nextLine();
+                        }
                         break;
                     case "d":
                         System.out.print("Introduce un texto (sin intros): ");
